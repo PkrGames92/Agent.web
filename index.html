@@ -1,338 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Agent Web — VIP 3 Dashboard</title>
-<style>
-  :root{
-    --bg1:#ff512f;
-    --bg2:#f09819;
-    --pri:#ef4444;
-    --pri2:#f59e0b;
-    --txt:#1f2937;
-    --muted:#6b7280;
-    --white:#ffffff;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    color:var(--txt);
-    background: linear-gradient(135deg, var(--bg1), var(--bg2), #9333ea);
-    background-size: 400% 400%;
-    animation: gradientMove 12s ease infinite;
-    min-height:100vh;
-  }
-  @keyframes gradientMove{
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-  }
-  header{
-    color:#fff; text-align:center; padding:18px 12px; font-weight:800; letter-spacing:.5px;
-    background:rgba(0,0,0,.25); font-size:24px;
-  }
-  .nav{
-    display:flex; justify-content:center; gap:10px; flex-wrap:wrap; padding:12px;
-  }
-  .nav button{
-    padding:10px 14px; border:none; border-radius:12px; color:#fff; font-weight:700; cursor:pointer;
-    background:linear-gradient(90deg, rgba(255,255,255,.28), rgba(255,255,255,.18));
-    backdrop-filter: blur(6px);
-  }
-  .nav button.active{ outline:2px solid rgba(255,255,255,.9); }
-  .container{ max-width:460px; margin:18px auto 60px; padding:0 14px; }
-  .card{
-    background:var(--white); border-radius:18px; box-shadow:0 12px 30px rgba(0,0,0,.18);
-    padding:22px; text-align:center;
-  }
-  .balance{
-    color:var(--pri); font-weight:800; font-size:22px; margin-bottom:6px;
-  }
-  .sub{ color:var(--muted); font-size:13px; margin-bottom:12px; }
-  .plan{
-    display:flex; gap:10px; justify-content:space-between; margin-top:10px; color:#111; text-align:left;
-    background:#fff7ed; border:1px solid #fed7aa; border-radius:12px; padding:12px 14px;
-  }
-  .badge{background:#fee2e2; color:#b91c1c; font-weight:800; font-size:12px; padding:4px 8px; border-radius:999px}
-  .circle-wrap{ display:flex; align-items:center; justify-content:center; margin:18px auto 6px; }
-  .circle{
-    width:180px; height:180px; border-radius:50%;
-    background:conic-gradient(var(--pri) 0deg, var(--pri2) 0deg, #e5e7eb 0);
-    display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:18px;
-    box-shadow:0 8px 22px rgba(0,0,0,.25);
-    position:relative;
-  }
-  .circle .inner{
-    background:#fff; color:var(--pri); width:140px; height:140px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center; box-shadow: inset 0 0 0 6px rgba(239,68,68,.15);
-    text-align:center; padding:8px;
-  }
-  .button{
-    display:inline-block; width:100%; border:none; cursor:pointer; padding:12px 16px; margin-top:10px;
-    color:#fff; font-weight:800; border-radius:14px; font-size:16px;
-    background:linear-gradient(90deg,var(--pri),var(--pri2));
-    transition:transform .08s ease;
-  }
-  .button:hover{ transform:translateY(-1px); }
-  .button.secondary{ background:linear-gradient(90deg,#fb7185,#fbbf24); }
-  .button.ghost{ background:#fff; color:var(--pri); border:2px solid var(--pri); }
-  .row{ display:flex; gap:10px; }
-  .row .col{ flex:1 }
-  .input, .select{
-    width:100%; padding:12px 14px; border-radius:12px; border:1px solid #e5e7eb; margin:8px 0; font-size:15px;
-  }
-  .help{font-size:12px; color:var(--muted); margin-top:6px}
-  .small{font-size:12px; color:var(--muted)}
-  .success{color:#16a34a; font-weight:700}
-  .error{color:#dc2626; font-weight:700}
-  .page{ display:none; }
-  .page.active{ display:block; }
-  .top-actions{ display:flex; gap:8px; margin-top:8px; }
-  .linklike{ font-size:12px; color:#2563eb; text-decoration:underline; cursor:pointer }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VIP 3 Plan — Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+      color: white;
+    }
+    header {
+      background: #111;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    nav {
+      display: flex;
+      justify-content: space-around;
+      background: #222;
+      padding: 0.5rem;
+    }
+    nav button {
+      background: #333;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    nav button.active {
+      background: #007bff;
+    }
+    .section {
+      display: none;
+      padding: 1rem;
+    }
+    .section.active {
+      display: block;
+    }
+    .card {
+      background: #2e2e3e;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    }
+    .btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin: 0.3rem 0;
+      border-radius: 6px;
+      border: none;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-top: 0.5rem;
+    }
+  </style>
 </head>
 <body>
+  <header>VIP 3 Plan — Dashboard</header>
+  <nav>
+    <button onclick="showSection('dashboard')" class="active">Dashboard</button>
+    <button onclick="showSection('deposit')">Deposit</button>
+    <button onclick="showSection('withdraw')">Withdraw</button>
+    <button onclick="showSection('referral')">Referral</button>
+  </nav>
 
-<header>🔥 Agent Web — VIP 3 Dashboard</header>
-
-<div class="nav">
-  <button id="tab-dashboard" class="active" onclick="showPage('dashboard')">Dashboard</button>
-  <button id="tab-deposit" onclick="showPage('deposit')">Deposit</button>
-  <button id="tab-withdraw" onclick="showPage('withdraw')">Withdraw</button>
-  <button id="tab-referral" onclick="showPage('referral')">Referral</button>
-</div>
-
-<div class="container">
-
-  <!-- DASHBOARD -->
-  <section id="dashboard" class="page active">
+  <!-- Dashboard -->
+  <div id="dashboard" class="section active">
     <div class="card">
-      <div class="balance">Balance: Rs <span id="balance">0</span></div>
-      <div class="sub">Daily Profit: <b>Rs 833</b> · Duration: <b>30 days</b> · Total Profit: <b>Rs 25,000</b></div>
-
-      <div class="circle-wrap">
-        <div class="circle" id="circle">
-          <div class="inner" id="countTxt">Buy Plan</div>
-        </div>
-      </div>
-      <div class="help">24h countdown inside the circle — after completion, daily profit will be credited</div>
-
-      <button class="button" onclick="onBuyPlan()">Buy Now — VIP 3 (Rs 5,000)</button>
-
-      <div class="plan">
-        <div>
-          <div class="badge">VIP 3</div>
-          <div class="small" style="margin-top:6px">Price: Rs 5,000 · Daily: 833 · 30 Days</div>
-        </div>
-        <div class="small">Auto credit every 24h</div>
-      </div>
-
-      <div class="top-actions">
-        <button class="button secondary" onclick="showPage('deposit')">Go to Deposit</button>
-        <button class="button ghost" onclick="showPage('withdraw')">Withdraw</button>
-      </div>
-
-      <div class="help" style="margin-top:10px">
-        Demo only (no backend). Data is saved in your browser (localStorage).
-        <span class="linklike" onclick="resetDemo()">Reset demo</span>
-      </div>
+      <h3>Balance: Rs <span id="balance">0</span></h3>
+      <p>Daily Profit: Rs 833</p>
+      <p id="timer">Next profit in: --:--:--</p>
+      <button class="btn" onclick="buyPlan()">Buy Now (Rs 5000)</button>
     </div>
-  </section>
+  </div>
 
-  <!-- DEPOSIT -->
-  <section id="deposit" class="page">
+  <!-- Deposit -->
+  <div id="deposit" class="section">
     <div class="card">
-      <h3>💳 Deposit Funds</h3>
-      <div class="small" style="margin-bottom:8px">Methods allowed: <b>Easypaisa</b>, <b>USDT Address</b></div>
-
-      <div id="easypaisaBox" class="small" style="text-align:left; background:#f8fafc; border:1px solid #e2e8f0; padding:10px; border-radius:10px; margin-bottom:10px;">
-        <b>Easypaisa Number:</b><br>
-        <code>03319535871</code>
-      </div>
-
-      <div id="usdtBox" class="small" style="text-align:left; background:#f8fafc; border:1px solid #e2e8f0; padding:10px; border-radius:10px;">
-        <b>USDT (TRC20) Address:</b><br>
-        <code id="usdtAddr">TRREi2xqQF9rqQt23xBviZ3h9zWkQiUaaq</code>
-        <div><span class="linklike" onclick="copyUSDT()">Copy</span></div>
-      </div>
-
-      <input type="text" id="txnId" class="input" placeholder="Enter Transaction ID (e.g., 137899208)">
-      <button class="button" onclick="onDeposit()">Submit Deposit (adds Rs 5,000)</button>
-      <div class="help">Note: This is demo — on entering any transaction ID Rs 5000 will be added to your balance</div>
+      <h3>Deposit</h3>
+      <p>Easypaisa Number: <b>03319535871</b></p>
+      <p>USDT Address: <b>TRREi2xqQF9rqQt23xBviZ3h9zWkQiUaaq</b></p>
+      <input type="text" id="txid" placeholder="Enter Transaction ID">
+      <button class="btn" onclick="makeDeposit()">Submit</button>
+      <p class="note">Only valid Transaction ID will add Rs 5000 to your balance.</p>
     </div>
-  </section>
+  </div>
 
-  <!-- WITHDRAW -->
-  <section id="withdraw" class="page">
+  <!-- Withdraw -->
+  <div id="withdraw" class="section">
     <div class="card">
-      <h3>💸 Withdraw Funds</h3>
-      <div class="row">
-        <div class="col">
-          <label class="small">Method</label>
-          <select id="withdrawMethod" class="select">
-            <option value="Easypaisa">Easypaisa</option>
-            <option value="JazzCash">JazzCash</option>
-            <option value="USDT">USDT Address</option>
-          </select>
-        </div>
-      </div>
-      <input type="text" id="withdrawNumber" class="input" placeholder="Enter Account / Address">
-      <input type="number" id="withdrawAmount" class="input" placeholder="Enter Amount (Rs)">
-      <button class="button" onclick="onWithdraw()">Submit Withdraw</button>
-      <div id="wdMsg" class="help"></div>
+      <h3>Withdraw</h3>
+      <input type="text" id="account" placeholder="Enter Account / Address">
+      <button class="btn" onclick="withdraw()">Request Withdraw</button>
     </div>
-  </section>
+  </div>
 
-  <!-- REFERRAL -->
-  <section id="referral" class="page">
+  <!-- Referral -->
+  <div id="referral" class="section">
     <div class="card">
-      <h3>👥 Referral Program</h3>
-      <p class="sub">Invite friends and earn <b>20% commission</b> on their deposit.</p>
-      <label class="small">Your Referral Link</label>
-      <input type="text" id="refLink" class="input" value="https://example.com/ref/12345" readonly>
-      <button class="button secondary" onclick="addReferral()">Simulate Referral Deposit (+ Rs 1,000)</button>
-      <div class="help">Click the button to simulate referral deposit of Rs 5000 — you get 20% = Rs 1000</div>
+      <h3>Referral Program</h3>
+      <p class="note">On every invite, you will get 20% commission.</p>
     </div>
-  </section>
+  </div>
 
-</div>
+  <script>
+    let balance = 0;
+    let planActive = false;
+    let countdown;
+    const txidCode = "1290347845"; // Only valid Transaction ID
 
-<script>
-  const PLAN_PRICE = 5000;
-  const DAILY_PROFIT = 833;
-  const PLAN_DAYS = 30;
-  const INTERVAL_MS = 24 * 60 * 60 * 1000;
-
-  function defaultState(){
-    return { balance:0, planActive:false, planStart:null, lastPayout:null, payouts:0 };
-  }
-  function getState(){
-    try{ return JSON.parse(localStorage.getItem('aw_state')) || defaultState(); }
-    catch(e){ return defaultState(); }
-  }
-  function setState(s){ localStorage.setItem('aw_state', JSON.stringify(s)); }
-  function updateBalanceDom(){
-    const el = document.getElementById('balance');
-    if(el) el.textContent = (getState().balance).toString();
-  }
-
-  function settleProfit(){
-    const s = getState();
-    if(!s.planActive){ setState(s); return; }
-    const now = Date.now();
-    const remaining = PLAN_DAYS - s.payouts;
-    if(remaining <= 0){ s.planActive=false; setState(s); return; }
-
-    const last = s.lastPayout || s.planStart || now;
-    const intervals = Math.floor((now - last) / INTERVAL_MS);
-    if(intervals > 0){
-      const creditIntervals = Math.min(intervals, remaining);
-      s.balance += DAILY_PROFIT * creditIntervals;
-      s.payouts += creditIntervals;
-      s.lastPayout = last + creditIntervals * INTERVAL_MS;
-      if(s.payouts >= PLAN_DAYS){ s.planActive=false; }
-      setState(s);
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
     }
-  }
 
-  function timeToNext(){
-    const s = getState();
-    if(!s.planActive){ return {sec: INTERVAL_MS/1000}; }
-    const last = s.lastPayout || s.planStart || Date.now();
-    const nextAt = last + INTERVAL_MS;
-    const sec = Math.max(0, Math.ceil((nextAt - Date.now())/1000));
-    return {sec};
-  }
-  function formatHHMMSS(totalSec){
-    const h = Math.floor(totalSec/3600);
-    const m = Math.floor((totalSec%3600)/60);
-    const s = totalSec%60;
-    return `${h}h ${m}m ${s}s`;
-  }
+    function buyPlan() {
+      if (balance >= 5000) {
+        balance -= 5000;
+        planActive = true;
+        document.getElementById("balance").innerText = balance;
+        startCountdown();
+        alert("VIP 3 Plan Activated!");
+      } else {
+        alert("Insufficient Balance! Deposit first.");
+      }
+    }
 
-  function onBuyPlan(){
-    const s = getState();
-    if(s.planActive){ alert('Plan already active!'); return; }
-    if(s.balance < PLAN_PRICE){ alert('Insufficient balance!'); return; }
-    s.balance -= PLAN_PRICE;
-    s.planActive = true;
-    s.planStart = Date.now();
-    s.lastPayout = Date.now();
-    s.payouts = 0;
-    setState(s);
-    updateBalanceDom();
-    alert('VIP 3 Activated! Daily Rs 833 will be added for 30 days.');
-  }
+    function startCountdown() {
+      let timeLeft = 24 * 60 * 60;
+      clearInterval(countdown);
+      countdown = setInterval(() => {
+        if (!planActive) return;
+        timeLeft--;
+        let h = String(Math.floor(timeLeft / 3600)).padStart(2,'0');
+        let m = String(Math.floor((timeLeft % 3600) / 60)).padStart(2,'0');
+        let s = String(timeLeft % 60).padStart(2,'0');
+        document.getElementById("timer").innerText = `Next profit in: ${h}:${m}:${s}`;
+        if (timeLeft <= 0) {
+          balance += 833;
+          document.getElementById("balance").innerText = balance;
+          timeLeft = 24 * 60 * 60;
+        }
+      }, 1000);
+    }
 
-  function copyUSDT(){
-    const addr = document.getElementById('usdtAddr').textContent;
-    navigator.clipboard.writeText(addr);
-    alert('USDT address copied!');
-  }
+    function makeDeposit() {
+      const txid = document.getElementById("txid").value.trim();
+      if (txid === txidCode) {
+        balance += 5000;
+        document.getElementById("balance").innerText = balance;
+        alert("Rs 5000 deposited successfully!");
+      } else {
+        alert("Invalid Transaction ID!");
+      }
+    }
 
-  function onDeposit(){
-    const txn = document.getElementById('txnId').value || '';
-    if(!txn.trim()){ alert('Enter valid Transaction ID!'); return; }
-    const s = getState();
-    s.balance += 5000;
-    setState(s);
-    updateBalanceDom();
-    alert('Deposit successful! Rs 5000 added.');
-    showPage('dashboard');
-  }
-
-  function onWithdraw(){
-    const amount = parseInt(document.getElementById('withdrawAmount').value,10) || 0;
-    const s = getState();
-    const msg = document.getElementById('wdMsg');
-    if(amount<=0){ msg.textContent = 'Invalid amount'; msg.className='help error'; return; }
-    if(amount> s.balance){ msg.textContent = 'Insufficient balance'; msg.className='help error'; return; }
-    s.balance -= amount; setState(s); updateBalanceDom();
-    msg.textContent = `Withdraw request of Rs ${amount} submitted!`; msg.className='help success';
-    showPage('dashboard');
-  }
-
-  function addReferral(){
-    const s = getState();
-    s.balance += 1000;
-    setState(s);
-    updateBalanceDom();
-    alert('Referral commission Rs 1000 added!');
-    showPage('dashboard');
-  }
-
-  function resetDemo(){
-    localStorage.removeItem('aw_state');
-    alert('Demo reset. Balance and plan state cleared.');
-    location.reload();
-  }
-
-  function showPage(id){
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-    document.getElementById('tab-'+id).classList.add('active');
-  }
-
-  function loop(){
-    settleProfit();
-    updateBalanceDom();
-    const circle = document.getElementById('circle');
-    const innerTxt = document.getElementById('countTxt');
-    const s = getState();
-    const t = timeToNext(); const sec = t.sec;
-    const pct = s.planActive ? 1 - Math.min(1, sec/(24*3600)) : 0;
-    const deg = Math.floor(pct*360);
-    circle.style.background = `conic-gradient(var(--pri) 0deg, var(--pri2) ${deg}deg, #e5e7eb 0)`;
-    innerTxt.textContent = s.planActive ? formatHHMMSS(sec) : 'Buy Plan';
-  }
-  setInterval(loop, 1000);
-
-  document.addEventListener('DOMContentLoaded', ()=>{
-    loop();
-  });
-</script>
-
+    function withdraw() {
+      const acc = document.getElementById("account").value.trim();
+      if (balance > 0 && acc) {
+        alert("Withdraw request submitted.");
+        balance = 0;
+        document.getElementById("balance").innerText = balance;
+      } else {
+        alert("No balance or invalid account.");
+      }
+    }
+  </script>
 </body>
 </html>
