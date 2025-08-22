@@ -13,7 +13,11 @@
       justify-content: center;
       flex-direction: column;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ff7f2a, #e53935);
+      background: linear-gradient(135deg, #ff7f2a, #e53935),
+                  linear-gradient(225deg, #42a5f5, #7e57c2),
+                  linear-gradient(45deg, #66bb6a, #ffca28),
+                  linear-gradient(315deg, #f06292, #ba68c8);
+      background-blend-mode: screen;
       color: #111;
     }
 
@@ -38,6 +42,7 @@
       background: #fff;
       cursor: pointer;
       user-select: none;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
     }
 
     .circle-btn span {
@@ -52,6 +57,7 @@
       font-size: 15px;
       text-align: center;
       color: #fff;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
     }
   </style>
 </head>
@@ -67,7 +73,7 @@
 
   <div class="note">
     Note: This is a 30-day plan.<br>
-    Each day your balance will increase by Rs 833.
+    Every 24 hours your balance will increase by Rs 833.
   </div>
 
   <script>
@@ -80,20 +86,20 @@
     buyBtn.addEventListener("click", () => {
       if (!planActive) {
         planActive = true;
-        balance = 0; // reset balance
+        balance = 0;
         days = 0;
         balanceDiv.textContent = "Balance: Rs " + balance;
 
-        // Add Rs 833 every day (for testing: 1 second = 1 day)
+        // Add Rs 833 every 24 hours (86400000 ms)
         const interval = setInterval(() => {
           if (days < 30) {
             days++;
             balance += 833;
             balanceDiv.textContent = "Balance: Rs " + balance;
           } else {
-            clearInterval(interval); // stop after 30 days
+            clearInterval(interval);
           }
-        }, 1000); // <- 1000 ms = 1 second (testing only)
+        }, 86400000); // 24 hours = 86,400,000 ms
       }
     });
   </script>
