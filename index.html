@@ -1,184 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Buy Plan</title>
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ff7f2a, #e53935),
-                  linear-gradient(225deg, #42a5f5, #7e57c2),
-                  linear-gradient(45deg, #66bb6a, #ffca28),
-                  linear-gradient(315deg, #f06292, #ba68c8);
-      background-blend-mode: screen;
-      color: #111;
+    :root{
+      --red:#e53935;
+      --orange:#ff7f2a;
+      --white:#fff;
+      --text:#111;
+      --shadow: rgba(0,0,0,.18);
+    }
+    /* Multi-color background */
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(255,127,42,.22), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(229,57,53,.22), transparent 60%),
+        radial-gradient(700px 500px at 20% 90%, rgba(66,165,245,.22), transparent 60%),
+        radial-gradient(600px 400px at 85% 85%, rgba(102,187,106,.22), transparent 60%),
+        linear-gradient(135deg, #fff5ee, #f7f9ff);
     }
 
-    .balance {
-      font-size: 28px;
-      margin-bottom: 30px;
-      background: #fff;
-      padding: 10px 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    .wrap{
+      width:min(540px, 92vw);
+      text-align:center;
+      background: rgba(255,255,255,.75);
+      backdrop-filter: blur(2px) saturate(1.1);
+      border-radius:20px;
+      padding:22px 18px 26px;
+      box-shadow:0 10px 30px var(--shadow);
     }
 
-    .circle-btn {
-      position: relative;
-      width: 220px;
-      height: 220px;
-      border: 6px solid #000;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #fff;
-      cursor: pointer;
-      user-select: none;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    .row{display:flex; gap:12px; justify-content:center; flex-wrap:wrap;}
+    .stat{
+      background:#fff;
+      border-radius:12px;
+      padding:10px 14px;
+      box-shadow:0 6px 16px var(--shadow);
+      font-weight:600;
+      min-width:150px;
     }
 
-    .circle-btn span {
-      text-align: center;
-      color: #e53935;
-      font-size: 22px;
-      font-weight: bold;
+    /* Round Buy button */
+    .circle-btn{
+      position:relative;
+      width:240px; height:240px;
+      margin:16px auto 6px;
+      border:8px solid #000;
+      border-radius:50%;
+      display:grid; place-items:center;
+      background:#fff;
+      cursor:pointer;
+      user-select:none;
+      box-shadow:0 12px 30px var(--shadow);
+      transition: transform .08s ease;
+    }
+    .circle-btn:active{ transform: scale(.98); }
+
+    /* inner colorful ring */
+    .circle-btn::after{
+      content:"";
+      position:absolute; inset:22px;
+      border-radius:50%;
+      border:10px solid transparent;
+      background:
+        linear-gradient(#fff,#fff) padding-box,
+        conic-gradient(from 0deg,
+          #ff7f2a, #e53935, #7e57c2, #42a5f5, #66bb6a, #ffca28, #ff7f2a
+        ) border-box;
+      -webkit-mask:
+        linear-gradient(#000 0 0) padding-box,
+        linear-gradient(#000 0 0) border-box;
+      -webkit-mask-composite: xor; mask-composite: exclude;
     }
 
-    .note {
-      margin-top: 25px;
-      font-size: 15px;
-      text-align: center;
-      color: #fff;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+    .btn-text{
+      position:relative;
+      text-align:center;
+      color:var(--red);
+      font-size:24px; font-weight:800; line-height:1.2;
+    }
+    .btn-text .price{ display:block; font-size:16px; color:#b12e27; margin-top:4px; }
+
+    .note{
+      margin-top:6px; font-size:14px; color:#333;
     }
 
     /* About button */
-    .about-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background: #fff;
-      color: #333;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    .about-btn{
+      margin-top:12px;
+      padding:10px 16px;
+      font-size:15px; font-weight:700;
+      border:none; border-radius:10px;
+      background:#fff; color:#333;
+      cursor:pointer;
+      box-shadow:0 6px 16px var(--shadow);
     }
 
     /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
+    .modal{
+      position:fixed; inset:0; display:none;
+      align-items:center; justify-content:center;
+      background:rgba(0,0,0,.55);
+      padding:16px;
     }
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    .modal-content{
+      width:min(480px, 96vw);
+      background:#fff; border-radius:14px; padding:18px;
+      box-shadow:0 12px 32px rgba(0,0,0,.35);
+      text-align:left;
     }
-    .modal h2 {
-      margin-top: 0;
-      color: #e53935;
+    .modal-header{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom:8px;
     }
-    .close {
-      float: right;
-      font-size: 22px;
-      cursor: pointer;
-      color: #333;
+    .modal-title{ margin:0; color:#e53935; font-size:18px; }
+    .close{ border:none; background:transparent; font-size:24px; cursor:pointer; }
+
+    .grid{
+      display:grid; grid-template-columns: 1fr 1fr; gap:8px 14px;
+      font-size:14px;
     }
+    .label{ color:#555; }
+    .value{ font-weight:700; color:#222; }
   </style>
 </head>
 <body>
-  <div class="balance" id="balance">Balance: Rs 0</div>
+  <div class="wrap">
+    <div class="row">
+      <div class="stat" id="balance">Balance: Rs 0</div>
+      <div class="stat" id="daysStat">Days credited: 0 / 30</div>
+      <div class="stat" id="countdown">Next credit in: --:--:--</div>
+    </div>
 
-  <div class="circle-btn" id="buyBtn">
-    <span>
-      Buy Plan<br>
-      Rs 5000
-    </span>
+    <div class="circle-btn" id="buyBtn" aria-label="Buy Plan Rs 5000">
+      <div class="btn-text">
+        Buy Plan
+        <span class="price">Rs 5000</span>
+      </div>
+    </div>
+
+    <div class="note">
+      Note: 30-day plan. Every 24 hours, Rs 833 will be added automatically after purchase.
+    </div>
+
+    <button class="about-btn" id="aboutBtn">About</button>
   </div>
-
-  <div class="note">
-    Note: This is a 30-day plan.<br>
-    Every 24 hours your balance will increase by Rs 833.
-  </div>
-
-  <button class="about-btn" id="aboutBtn">About</button>
 
   <!-- Modal -->
-  <div class="modal" id="aboutModal">
-    <div class="modal-content">
-      <span class="close" id="closeModal">&times;</span>
-      <h2>Transaction Details</h2>
-      <p><b>Funding Source:</b> Easypaisa Account</p>
-      <p><b>Sent To:</b> Fansty Gam Peshwr (03319535871)</p>
-      <p><b>Account Details:</b> Malik Wali Ullah</p>
-      <p><b>Sent By:</b> Muhammad Adnan (03068865110)</p>
-      <p><b>Amount:</b> Rs. 5,000</p>
-      <p><b>Fee/Charge:</b> No Charge</p>
-      <p><b>Total Amount:</b> Rs. 5,000</p>
+  <div class="modal" id="aboutModal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+      <div class="modal-header">
+        <h3 class="modal-title" id="aboutTitle">Transaction Details</h3>
+        <button class="close" id="closeModal" aria-label="Close">&times;</button>
+      </div>
+      <div class="grid">
+        <div class="label">Funding Source</div><div class="value">Easypaisa Account</div>
+        <div class="label">Sent To</div><div class="value">Fansty Gam Peshwr (03319535871)</div>
+        <div class="label">Account Details</div><div class="value">Malik Wali Ullah</div>
+        <div class="label">Sent By</div><div class="value">Muhammad Adnan (03068865110)</div>
+        <div class="label">Amount</div><div class="value">Rs 5,000</div>
+        <div class="label">Fee/Charge</div><div class="value">No Charge</div>
+        <div class="label">Total Amount</div><div class="value">Rs 5,000</div>
+      </div>
     </div>
   </div>
 
   <script>
+    // --- State ---
     let balance = 0;
-    let days = 0;
     let planActive = false;
-    const balanceDiv = document.getElementById("balance");
-    const buyBtn = document.getElementById("buyBtn");
+    let planStart = null;       // timestamp in ms
+    let daysCredited = 0;       // how many daily credits applied (max 30)
 
-    buyBtn.addEventListener("click", () => {
-      if (!planActive) {
-        planActive = true;
-        balance = 0;
-        days = 0;
-        balanceDiv.textContent = "Balance: Rs " + balance;
+    // --- Elements ---
+    const balanceDiv   = document.getElementById('balance');
+    const daysStatDiv  = document.getElementById('daysStat');
+    const countdownDiv = document.getElementById('countdown');
+    const buyBtn       = document.getElementById('buyBtn');
 
-        // Add Rs 833 every 24 hours (86400000 ms)
-        const interval = setInterval(() => {
-          if (days < 30) {
-            days++;
-            balance += 833;
-            balanceDiv.textContent = "Balance: Rs " + balance;
-          } else {
-            clearInterval(interval);
-          }
-        }, 86400000);
+    // Modal elements
+    const aboutBtn   = document.getElementById('aboutBtn');
+    const aboutModal = document.getElementById('aboutModal');
+    const closeModal = document.getElementById('closeModal');
+
+    // --- Constants ---
+    const DAILY_MS = 24 * 60 * 60 * 1000; // 24 hours in ms
+    const DAILY_AMOUNT = 833;
+    const MAX_DAYS = 30;
+
+    function updateUI(){
+      balanceDiv.textContent = "Balance: Rs " + balance;
+      daysStatDiv.textContent = `Days credited: ${daysCredited} / ${MAX_DAYS}`;
+
+      if (!planActive || !planStart || daysCredited >= MAX_DAYS){
+        countdownDiv.textContent = "Next credit in: --:--:--";
+        return;
       }
+      const now = Date.now();
+      const elapsed = now - planStart;
+      const nextCreditAt = planStart + (daysCredited + 1) * DAILY_MS;
+      const remaining = Math.max(0, nextCreditAt - now);
+
+      countdownDiv.textContent = "Next credit in: " + formatHMS(remaining);
+    }
+
+    function formatHMS(ms){
+      const totalSec = Math.floor(ms / 1000);
+      const h = String(Math.floor(totalSec / 3600)).padStart(2,'0');
+      const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2,'0');
+      const s = String(totalSec % 60).padStart(2,'0');
+      return `${h}:${m}:${s}`;
+    }
+
+    function tick(){
+      if (!planActive || !planStart) { updateUI(); return; }
+      const now = Date.now();
+      const elapsed = now - planStart;
+
+      // Calculate how many full days have passed since start
+      const shouldBeDays = Math.min(MAX_DAYS, Math.floor(elapsed / DAILY_MS));
+
+      // Apply any pending credits (this guarantees the timer "starts" immediately and stays accurate)
+      while (daysCredited < shouldBeDays){
+        daysCredited += 1;
+        balance += DAILY_AMOUNT;
+      }
+
+      // Stop after max days
+      if (daysCredited >= MAX_DAYS){
+        planActive = false;
+      }
+
+      updateUI();
+    }
+
+    buyBtn.addEventListener('click', () => {
+      if (planActive) return;         // ignore if already running
+      planActive = true;
+      planStart = Date.now();         // start timer NOW
+      balance = 0;                    // balance remains zero at purchase
+      daysCredited = 0;
+      updateUI();
     });
 
-    // Modal logic
-    const aboutBtn = document.getElementById("aboutBtn");
-    const aboutModal = document.getElementById("aboutModal");
-    const closeModal = document.getElementById("closeModal");
+    // Accurate 1-second UI updater (logic is time-based, not interval-based)
+    setInterval(tick, 1000);
 
-    aboutBtn.onclick = () => {
-      aboutModal.style.display = "flex";
-    }
-    closeModal.onclick = () => {
-      aboutModal.style.display = "none";
-    }
-    window.onclick = (event) => {
-      if (event.target === aboutModal) {
-        aboutModal.style.display = "none";
-      }
-    }
+    // Modal controls
+    aboutBtn.onclick = () => { aboutModal.style.display = 'flex'; };
+    closeModal.onclick = () => { aboutModal.style.display = 'none'; };
+    window.addEventListener('click', (e) => {
+      if (e.target === aboutModal) aboutModal.style.display = 'none';
+    });
   </script>
 </body>
 </html>
